@@ -65,18 +65,19 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const {
-            roomNumber,
-            roomType,
-            title,
-            description,
-            pricePerNight,
-            maxGuests,
-            bedType,
-            size,
-            amenities,
-            images,
-            status
-        } = req.body;
+    roomNumber,
+    roomType,
+    title,
+    description,
+    singleOccupancyPrice,
+    doubleOccupancyPrice,
+    maxGuests,
+    bedType,
+    size,
+    amenities,
+    images,
+    status
+} = req.body;
 
         const existingRoom = await Room.findOne({
             roomNumber
@@ -90,18 +91,19 @@ router.post("/", async (req, res) => {
         }
 
         const room = await Room.create({
-            roomNumber,
-            roomType,
-            title,
-            description,
-            pricePerNight,
-            maxGuests,
-            bedType,
-            size,
-            amenities,
-            images,
-            status
-        });
+    roomNumber,
+    roomType,
+    title,
+    description,
+    singleOccupancyPrice,
+    doubleOccupancyPrice,
+    maxGuests,
+    bedType,
+    size,
+    amenities,
+    images,
+    status
+});
 
         res.status(201).json({
             success: true,

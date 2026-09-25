@@ -33,6 +33,188 @@
     <!-- Existing CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
+
+<style>
+/* =========================================================
+   CONTACT / INQUIRY FORM
+========================================================= */
+
+.contact-section {
+    padding: 100px 20px;
+    background: #0a0a0a;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.contact-content h2 {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(45px, 5vw, 64px);
+    font-weight: 500;
+    line-height: 1;
+}
+
+.contact-content h2 span {
+    display: block;
+    color: var(--gold-light, #c9a35d);
+}
+
+.contact-content > p {
+    max-width: 470px;
+    margin: 20px 0 30px;
+    color: var(--muted, #999);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.contact-details a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #aaa;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.contact-details a:hover {
+    color: var(--gold-light, #c9a35d);
+}
+
+.contact-details i {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line, #333);
+    color: var(--gold, #b78b3c);
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.contact-details span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.contact-details strong {
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.inquiry-form {
+    padding: 30px;
+    background: #151515;
+    border: 1px solid var(--line, #333);
+    box-shadow: 0 20px 55px rgba(0,0,0,.3);
+}
+
+.inquiry-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.inquiry-field {
+    margin-bottom: 17px;
+}
+
+.inquiry-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #aaa;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.inquiry-field input,
+.inquiry-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #333;
+    outline: none;
+    background: #0b0b0b;
+    color: #fff;
+    padding: 13px 14px;
+    font-family: inherit;
+    font-size: 11px;
+    transition: .25s ease;
+}
+
+.inquiry-field input {
+    height: 47px;
+}
+
+.inquiry-field textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+
+.inquiry-field input:focus,
+.inquiry-field textarea:focus {
+    border-color: var(--gold, #b78b3c);
+}
+
+.inquiry-field input::placeholder,
+.inquiry-field textarea::placeholder {
+    color: #666;
+}
+
+.inquiry-submit {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--gold, #b78b3c);
+    background: var(--gold, #b78b3c);
+    color: #111;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    transition: .25s ease;
+}
+
+.inquiry-submit:hover {
+    background: var(--gold-light, #c9a35d);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .contact-section {
+        padding: 70px 20px;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .inquiry-form {
+        padding: 22px;
+    }
+
+    .inquiry-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -75,9 +257,9 @@
 
             <a href="#contact">Contact</a>
 
-            <a href="#booking" class="nav-book-btn">
-                Book Now
-            </a>
+            <a href="/rooms.html" class="nav-book-btn">
+    Book Now
+</a>
 
         </nav>
 
@@ -139,13 +321,10 @@
 
         <div class="hero-actions">
 
-            <a
-                href="#booking"
-                class="btn btn-gold"
-            >
-                Book Your Stay
-                <i class="bi bi-arrow-right"></i>
-            </a>
+            <a href="/rooms.html" class="btn btn-gold">
+    Book Your Stay
+    <i class="bi bi-arrow-right"></i>
+</a>
 
 
             <a
@@ -536,34 +715,12 @@
                         </h3>
 
                         <div class="room-price">
+    <strong>₹2,000</strong>
+    <span>/ night · Single</span>
 
-                            ₹2,000
-
-                            <span>
-                                / night · Single
-                            </span>
-
-                            <br>
-
-                            <strong class="room-double-price">
-                                ₹3,500
-                            </strong>
-
-                            <span>
-                                / night · Double
-                            </span>
-
-                            <br>
-
-                            <strong class="room-double-price">
-                                ₹2,500
-                            </strong>
-
-                            <span>
-                                / night · Double
-                            </span>
-
-                        </div>
+    <strong>₹2,500</strong>
+    <span>/ night · Double</span>
+</div>
 
                     </div>
 
@@ -638,13 +795,11 @@
                         </h3>
 
                         <div class="room-price">
+                            <strong>₹3,000</strong>
+                            <span>/ night · Single</span>
 
-                            ₹3,000
-
-                            <span>
-                                / night · Single
-                            </span>
-
+                            <strong>₹3,500</strong>
+                            <span>/ night · Double</span>
                         </div>
 
                     </div>
@@ -1086,6 +1241,145 @@
 </section>
 
 
+
+<!-- =========================================================
+     CONTACT / INQUIRY
+========================================================= -->
+
+<section class="contact-section section" id="contact">
+
+    <div class="container contact-grid">
+
+        <div class="contact-content">
+
+            <span class="section-label">
+                GET IN TOUCH
+            </span>
+
+            <h2>
+                Have an
+                <span>Inquiry?</span>
+            </h2>
+
+            <p>
+                Have a question about rooms, availability or your stay?
+                Send us your inquiry and our team will get back to you.
+            </p>
+
+            <div class="contact-details">
+
+                <a href="tel:+918679633669">
+                    <i class="bi bi-telephone"></i>
+                    <span>
+                        <strong>Call Us</strong>
+                        +91-8679633669
+                    </span>
+                </a>
+
+                <a
+                    href="https://wa.me/918679633669"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i class="bi bi-whatsapp"></i>
+                    <span>
+                        <strong>WhatsApp</strong>
+                        Chat with Royal DC Hotel
+                    </span>
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/search/?api=1&query=Royal+DC+Hotel%2C+Khair+Bypass%2C+Near+HP+Pump%2C+Aligarh%2C+Uttar+Pradesh"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i class="bi bi-geo-alt"></i>
+                    <span>
+                        <strong>Location</strong>
+                        Khair By Pass Near HP Pump, Aligarh
+                    </span>
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <form class="inquiry-form" id="inquiryForm">
+
+            <div class="inquiry-row">
+
+                <div class="inquiry-field">
+                    <label for="inquiryName">YOUR NAME</label>
+                    <input
+                        type="text"
+                        id="inquiryName"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+                <div class="inquiry-field">
+                    <label for="inquiryPhone">PHONE NUMBER</label>
+                    <input
+                        type="tel"
+                        id="inquiryPhone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="inquiry-field">
+                <label for="inquiryEmail">EMAIL ADDRESS</label>
+                <input
+                    type="email"
+                    id="inquiryEmail"
+                    name="email"
+                    placeholder="Enter your email address"
+                    required
+                >
+            </div>
+
+            <div class="inquiry-field">
+                <label for="inquirySubject">SUBJECT</label>
+                <input
+                    type="text"
+                    id="inquirySubject"
+                    name="subject"
+                    placeholder="What would you like to know?"
+                    required
+                >
+            </div>
+
+            <div class="inquiry-field">
+                <label for="inquiryMessage">YOUR MESSAGE</label>
+                <textarea
+                    id="inquiryMessage"
+                    name="message"
+                    rows="5"
+                    placeholder="Write your inquiry here..."
+                    required
+                ></textarea>
+            </div>
+
+            <button
+                type="submit"
+                class="inquiry-submit"
+            >
+                SEND INQUIRY
+                <i class="bi bi-arrow-right"></i>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
 <!-- =========================================================
      CTA
 ========================================================= -->
@@ -1112,7 +1406,7 @@
 
 
         <a
-            href="#booking"
+            href="/rooms.html"
             class="btn btn-gold"
         >
             Book Your Stay
@@ -1132,7 +1426,6 @@
 
 <footer
     class="site-footer"
-    id="contact"
 >
 
     <div class="container footer-grid">
@@ -1283,8 +1576,8 @@ document.addEventListener("DOMContentLoaded", function () {
             function () {
 
                 mainNav.classList.toggle(
-                    "mobile-open"
-                );
+    "active"
+);
 
             }
         );
@@ -1301,8 +1594,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 function () {
 
                     mainNav.classList.remove(
-                        "mobile-open"
-                    );
+    "active"
+);
 
                 }
             );
@@ -1419,6 +1712,59 @@ document.addEventListener("DOMContentLoaded", function () {
                         checkIn.value;
 
                 }
+
+            }
+        );
+
+    }
+
+
+    /* ================================================
+       CONTACT INQUIRY
+    ================================================= */
+
+    const inquiryForm =
+        document.getElementById("inquiryForm");
+
+    if (inquiryForm) {
+
+        inquiryForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                const name =
+                    document.getElementById("inquiryName").value.trim();
+
+                const phone =
+                    document.getElementById("inquiryPhone").value.trim();
+
+                const email =
+                    document.getElementById("inquiryEmail").value.trim();
+
+                const subject =
+                    document.getElementById("inquirySubject").value.trim();
+
+                const message =
+                    document.getElementById("inquiryMessage").value.trim();
+
+                const whatsappMessage = [
+                    "Royal DC Hotel - New Inquiry",
+                    "",
+                    `Name: ${name}`,
+                    `Phone: ${phone}`,
+                    `Email: ${email}`,
+                    `Subject: ${subject}`,
+                    "",
+                    `Message: ${message}`
+                ].join("\n");
+
+                const whatsappUrl =
+                    "https://wa.me/918679633669?text=" +
+                    encodeURIComponent(whatsappMessage);
+
+                window.open(whatsappUrl, "_blank");
 
             }
         );

@@ -1,34 +1,18 @@
 const express = require("express");
-const crypto = require("crypto");
+const mongoose = require("mongoose");
 
-const Booking = require("../models/Booking");
 const Room = require("../models/Room");
+const Booking = require("../models/Booking");
 const adminAuth = require("../middleware/adminAuth");
 
 const router = express.Router();
 
-// --------------------------------------------------
-// Constants
-// --------------------------------------------------
 
-const PAYMENT_HOLD_MINUTES = 10;
+// =====================================================
+// HELPER: Calculate number of nights
+// =====================================================
 
-// --------------------------------------------------
-// Generate unique booking ID
-// --------------------------------------------------
-
-const generateBookingId = () => {
-    return `RDH-${Date.now()}-${crypto
-        .randomBytes(3)
-        .toString("hex")
-        .toUpperCase()}`;
-};
-
-// --------------------------------------------------
-// Calculate total nights
-// --------------------------------------------------
-
-const calculateNights = (checkIn, checkOut) => {
+function calculateNights(checkIn, checkOut) {
     const start = new Date(checkIn);
     const end = new Date(checkOut);
 
@@ -38,77 +22,115 @@ const calculateNights = (checkIn, checkOut) => {
     return Math.ceil(
         difference / (1000 * 60 * 60 * 24)
     );
-};
+}
 
-// --------------------------------------------------
-// Create payment hold expiry
-// --------------------------------------------------
 
-const getPaymentHoldExpiry = () => {
-    return new Date(
-        Date.now() +
-        PAYMENT_HOLD_MINUTES * 60 * 1000
-    );
-};
+// =====================================================
+// HELPER: Generate Booking ID
+// =====================================================
 
-// --------------------------------------------------
-// Get occupancy-based room price
-// --------------------------------------------------
+function generateBookingId() {
+    return `RDH-${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase()}`;
+}
 
-const getRoomPrice = (room, adults) => {
-    const guestCount = Number(adults);
 
-    if (guestCount === 1) {
-        return room.singleOccupancyPrice;
-    }
-
-    return room.doubleOccupancyPrice;
-};
-
-// --------------------------------------------------
+// =====================================================
 // CREATE BOOKING
 // POST /api/bookings
-// --------------------------------------------------
+// =====================================================
 
 router.post("/", async (req, res) => {
     try {
+
         const {
+            roomId,
             guestName,
             guestEmail,
             guestPhone,
-            roomId,
             checkIn,
             checkOut,
             adults,
-            children,
-            specialRequest
+            children = 0,
+            specialRequest = ""
         } = req.body;
 
-        // ------------------------------------------
-        // Required fields
-        // ------------------------------------------
+
+        // -------------------------------------------------
+        // Validate required fields
+        // -------------------------------------------------
 
         if (
+            !roomId ||
             !guestName ||
             !guestEmail ||
             !guestPhone ||
-            !roomId ||
             !checkIn ||
             !checkOut ||
             !adults
         ) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Please provide all required booking details"
+                message: "Please fill all required booking fields."
             });
         }
 
-        // ------------------------------------------
-        // Validate adults
-        // ------------------------------------------
+
+        // -------------------------------------------------
+        // Validate MongoDB Room ID
+        // -------------------------------------------------
+
+        if (!mongoose.Types.ObjectId.isValid(roomId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid room selected."
+            });
+        }
+
+
+        // -------------------------------------------------
+        // Find Room
+        // -------------------------------------------------
+
+        const room = await Room.findById(roomId);
+
+        if (!room) {
+            return res.status(404).json({
+                success: false,
+                message: "Selected room was not found."
+            });
+        }
+
+
+        // -------------------------------------------------
+        // Check Room Status
+        // -------------------------------------------------
+
+        if (room.status !== "available") {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "This room is currently not available for booking."
+            });
+        }
+
+
+        // -------------------------------------------------
+        // Convert numbers
+        // -------------------------------------------------
 
         const adultCount = Number(adults);
+        const childrenCount = Number(children);
+
+        const totalGuests =
+            adultCount + childrenCount;
+
+
+        // -------------------------------------------------
+        // Validate Adults
+        // -------------------------------------------------
 
         if (
             !Number.isInteger(adultCount) ||
@@ -116,152 +138,142 @@ router.post("/", async (req, res) => {
         ) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "At least 1 adult is required"
+                message: "At least 1 adult is required."
             });
         }
 
-        // ------------------------------------------
-        // Find room
-        // ------------------------------------------
 
-        const room =
-            await Room.findById(roomId);
-
-        if (!room) {
-            return res.status(404).json({
-                success: false,
-                message: "Room not found"
-            });
-        }
-
-        // ------------------------------------------
-        // Check room status
-        // ------------------------------------------
-
-        if (room.status !== "available") {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "This room is currently unavailable"
-            });
-        }
-
-        // ------------------------------------------
-        // Validate dates
-        // ------------------------------------------
-
-        const startDate =
-            new Date(checkIn);
-
-        const endDate =
-            new Date(checkOut);
+        // -------------------------------------------------
+        // Validate Children
+        // -------------------------------------------------
 
         if (
-            Number.isNaN(
-                startDate.getTime()
-            ) ||
-            Number.isNaN(
-                endDate.getTime()
-            )
+            !Number.isInteger(childrenCount) ||
+            childrenCount < 0
         ) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Invalid check-in or check-out date"
+                message: "Invalid number of children."
             });
         }
+
+
+        // -------------------------------------------------
+        // Check Maximum Guests
+        // -------------------------------------------------
+
+        if (totalGuests > room.maxGuests) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    `This room allows maximum ${room.maxGuests} guests.`
+            });
+        }
+
+
+        // -------------------------------------------------
+        // Validate Dates
+        // -------------------------------------------------
+
+        const startDate = new Date(checkIn);
+        const endDate = new Date(checkOut);
+
+        if (
+            Number.isNaN(startDate.getTime()) ||
+            Number.isNaN(endDate.getTime())
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid check-in or check-out date."
+            });
+        }
+
 
         if (endDate <= startDate) {
             return res.status(400).json({
                 success: false,
                 message:
-                    "Check-out date must be after check-in date"
+                    "Check-out date must be after check-in date."
             });
         }
 
-        // ------------------------------------------
-        // Calculate nights
-        // ------------------------------------------
 
-        const nights =
+        // -------------------------------------------------
+        // Calculate Nights
+        // -------------------------------------------------
+
+        const totalNights =
             calculateNights(
-                startDate,
-                endDate
+                checkIn,
+                checkOut
             );
 
-        if (nights < 1) {
+
+        if (totalNights < 1) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Minimum stay is 1 night"
+                message: "Booking must be at least 1 night."
             });
         }
 
-        // ------------------------------------------
-        // Validate guests
-        // ------------------------------------------
 
-        const childCount =
-            Number(children || 0);
-
-        const totalGuests =
-            adultCount + childCount;
-
-        if (
-            totalGuests >
-            room.maxGuests
-        ) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    `This room allows maximum ${room.maxGuests} guests`
-            });
-        }
-
-        // ------------------------------------------
-        // Room pricing
+        // =================================================
+        // IMPORTANT:
+        // PRICE BASED ON OCCUPANCY
         //
-        // 1 adult  = Single occupancy price
-        // 2+ adults = Double occupancy price
-        // ------------------------------------------
+        // 1 Adult  = Single Occupancy
+        // 2+ Adults = Double Occupancy
+        // =================================================
 
         const pricePerNight =
-            getRoomPrice(
-                room,
-                adultCount
-            );
+            adultCount === 1
+                ? Number(room.singleOccupancyPrice)
+                : Number(room.doubleOccupancyPrice);
+
+
+        // -------------------------------------------------
+        // Check Room Pricing
+        // -------------------------------------------------
 
         if (
-            typeof pricePerNight !== "number" ||
+            !Number.isFinite(pricePerNight) ||
             pricePerNight < 0
         ) {
             return res.status(400).json({
                 success: false,
                 message:
-                    "Room pricing is not configured correctly"
+                    "Room pricing is not configured correctly."
             });
         }
 
-        // ------------------------------------------
-        // Check room availability
-        //
-        // A room is blocked only when:
-        //
-        // 1. Booking is confirmed
-        // 2. Booking is checked-in
-        // 3. Booking is pending AND its
-        //    payment hold has not expired
-        //
-        // Cancelled and checked-out bookings
-        // do not block availability.
-        // ------------------------------------------
+
+        // -------------------------------------------------
+        // Calculate Total Amount
+        // -------------------------------------------------
+
+        const totalAmount =
+            totalNights *
+            pricePerNight;
+
+
+        // =================================================
+        // CHECK ROOM AVAILABILITY
+        // =================================================
 
         const now = new Date();
 
-        const overlappingBooking =
-            await Booking.findOne({
+
+        const overlappingBookings =
+            await Booking.find({
                 room: room._id,
+
+                bookingStatus: {
+                    $in: [
+                        "pending",
+                        "confirmed",
+                        "checked-in"
+                    ]
+                },
 
                 $or: [
                     {
@@ -293,42 +305,47 @@ router.post("/", async (req, res) => {
                 }
             });
 
-        if (overlappingBooking) {
+
+        if (overlappingBookings.length > 0) {
             return res.status(409).json({
                 success: false,
                 message:
-                    "This room is already unavailable for the selected dates. Please choose different dates or another room."
+                    "This room is already booked for the selected dates."
             });
         }
 
-        // ------------------------------------------
-        // Calculate total amount
-        // ------------------------------------------
 
-        const totalAmount =
-            nights * pricePerNight;
+        // =================================================
+        // CREATE BOOKING
+        // =================================================
 
-        // ------------------------------------------
-        // Create temporary payment hold
-        // ------------------------------------------
+        const bookingId =
+            generateBookingId();
 
+
+        // Payment hold for 10 minutes
         const paymentHoldExpiresAt =
-            getPaymentHoldExpiry();
+            new Date(
+                Date.now() +
+                10 * 60 * 1000
+            );
 
-        // ------------------------------------------
-        // Create booking
-        // ------------------------------------------
 
         const booking =
-            await Booking.create({
-                bookingId:
-                    generateBookingId(),
+            new Booking({
 
-                guestName,
+                bookingId,
 
-                guestEmail,
+                guestName:
+                    guestName.trim(),
 
-                guestPhone,
+                guestEmail:
+                    guestEmail
+                        .trim()
+                        .toLowerCase(),
+
+                guestPhone:
+                    guestPhone.trim(),
 
                 room:
                     room._id,
@@ -346,14 +363,16 @@ router.post("/", async (req, res) => {
                     adultCount,
 
                 children:
-                    childCount,
+                    childrenCount,
 
                 totalNights:
-                    nights,
+                    totalNights,
 
-                pricePerNight,
+                pricePerNight:
+                    pricePerNight,
 
-                totalAmount,
+                totalAmount:
+                    totalAmount,
 
                 bookingStatus:
                     "pending",
@@ -361,140 +380,220 @@ router.post("/", async (req, res) => {
                 paymentStatus:
                     "pending",
 
-                paymentHoldExpiresAt,
+                paymentHoldExpiresAt:
+                    paymentHoldExpiresAt,
 
                 paymentMethod:
                     "razorpay",
 
                 specialRequest:
-                    specialRequest || ""
+                    specialRequest.trim()
             });
 
-        // ------------------------------------------
-        // Response
-        // ------------------------------------------
 
-        res.status(201).json({
+        await booking.save();
+
+
+        // =================================================
+        // SUCCESS RESPONSE
+        // =================================================
+
+        return res.status(201).json({
+
             success: true,
 
             message:
-                "Booking created successfully. Room is temporarily held for payment.",
+                "Booking created successfully.",
 
-            booking
+            booking: {
+
+                bookingId:
+                    booking.bookingId,
+
+                roomNumber:
+                    booking.roomNumber,
+
+                roomType:
+                    room.roomType,
+
+                guestName:
+                    booking.guestName,
+
+                guestEmail:
+                    booking.guestEmail,
+
+                guestPhone:
+                    booking.guestPhone,
+
+                checkIn:
+                    booking.checkIn,
+
+                checkOut:
+                    booking.checkOut,
+
+                adults:
+                    booking.adults,
+
+                children:
+                    booking.children,
+
+                totalNights:
+                    booking.totalNights,
+
+                pricePerNight:
+                    booking.pricePerNight,
+
+                totalAmount:
+                    booking.totalAmount,
+
+                bookingStatus:
+                    booking.bookingStatus,
+
+                paymentStatus:
+                    booking.paymentStatus
+            }
         });
 
+
     } catch (error) {
+
         console.error(
-            "Create booking error:",
-            error.message
+            "CREATE BOOKING ERROR:",
+            error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
-            message:
-                "Failed to create booking"
+            message: "Failed to create booking"
         });
     }
 });
 
-// --------------------------------------------------
+
+// =====================================================
 // GET ALL BOOKINGS
 // GET /api/bookings
-// --------------------------------------------------
+// =====================================================
 
 router.get("/", async (req, res) => {
+
     try {
+
         const bookings =
             await Booking.find()
                 .populate(
                     "room",
-                    "roomNumber roomType title"
+                    "roomNumber roomType title singleOccupancyPrice doubleOccupancyPrice"
                 )
                 .sort({
                     createdAt: -1
                 });
 
-        res.status(200).json({
+
+        return res.json({
+
             success: true,
-            count: bookings.length,
+
             bookings
         });
 
+
     } catch (error) {
+
         console.error(
-            "Get bookings error:",
-            error.message
+            "GET BOOKINGS ERROR:",
+            error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
+
             success: false,
+
             message:
                 "Failed to fetch bookings"
         });
     }
 });
 
-// --------------------------------------------------
-// GET SINGLE BOOKING
-// GET /api/bookings/:id
-// --------------------------------------------------
 
-router.get("/:id", async (req, res) => {
-    try {
-        const booking =
-            await Booking.findById(
-                req.params.id
-            ).populate(
-                "room",
-                "roomNumber roomType title singleOccupancyPrice doubleOccupancyPrice"
+// =====================================================
+// GET SINGLE BOOKING
+// GET /api/bookings/:bookingId
+// =====================================================
+
+router.get(
+    "/:bookingId",
+    async (req, res) => {
+
+        try {
+
+            const booking =
+                await Booking.findOne({
+                    bookingId:
+                        req.params.bookingId
+                })
+                .populate(
+                    "room",
+                    "roomNumber roomType title singleOccupancyPrice doubleOccupancyPrice"
+                );
+
+
+            if (!booking) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Booking not found"
+                });
+            }
+
+
+            return res.json({
+
+                success: true,
+
+                booking
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "GET SINGLE BOOKING ERROR:",
+                error
             );
 
-        if (!booking) {
-            return res.status(404).json({
+            return res.status(500).json({
+
                 success: false,
+
                 message:
-                    "Booking not found"
+                    "Failed to fetch booking"
             });
         }
-
-        res.status(200).json({
-            success: true,
-            booking
-        });
-
-    } catch (error) {
-        console.error(
-            "Get booking error:",
-            error.message
-        );
-
-        res.status(500).json({
-            success: false,
-            message:
-                "Failed to fetch booking"
-        });
     }
-});
+);
 
-// --------------------------------------------------
+
+// =====================================================
 // UPDATE BOOKING STATUS
-// PATCH /api/bookings/:id/status
-//
+// PATCH /api/bookings/:bookingId/status
 // ADMIN ONLY
-// --------------------------------------------------
+// =====================================================
 
 router.patch(
-    "/:id/status",
+    "/:bookingId/status",
     adminAuth,
     async (req, res) => {
+
         try {
+
             const {
-                bookingStatus
+                status
             } = req.body;
 
-            // --------------------------------------
-            // Allowed booking statuses
-            // --------------------------------------
 
             const allowedStatuses = [
                 "pending",
@@ -504,94 +603,87 @@ router.patch(
                 "cancelled"
             ];
 
+
             if (
-                !allowedStatuses.includes(
-                    bookingStatus
-                )
+                !allowedStatuses.includes(status)
             ) {
+
                 return res.status(400).json({
+
                     success: false,
+
                     message:
                         "Invalid booking status"
                 });
             }
 
-            // --------------------------------------
-            // Prepare update
-            // --------------------------------------
-
-            const updateData = {
-                bookingStatus
-            };
-
-            // --------------------------------------
-            // Confirmed booking
-            //
-            // Temporary payment hold is no longer
-            // needed once booking is confirmed.
-            // --------------------------------------
-
-            if (
-                bookingStatus === "confirmed"
-            ) {
-                updateData.paymentHoldExpiresAt =
-                    null;
-            }
-
-            // --------------------------------------
-            // Cancelled booking
-            //
-            // Release temporary room hold.
-            // --------------------------------------
-
-            if (
-                bookingStatus === "cancelled"
-            ) {
-                updateData.paymentHoldExpiresAt =
-                    null;
-            }
-
-            // --------------------------------------
-            // Update booking
-            // --------------------------------------
 
             const booking =
-                await Booking.findByIdAndUpdate(
-                    req.params.id,
-                    updateData,
-                    {
-                        new: true,
-                        runValidators: true
-                    }
-                );
+                await Booking.findOne({
+                    bookingId:
+                        req.params.bookingId
+                });
+
 
             if (!booking) {
+
                 return res.status(404).json({
+
                     success: false,
+
                     message:
                         "Booking not found"
                 });
             }
 
-            // --------------------------------------
-            // Response
-            // --------------------------------------
 
-            res.status(200).json({
+            booking.bookingStatus =
+                status;
+
+
+            // If booking is cancelled,
+            // release payment hold
+
+            if (status === "cancelled") {
+
+                booking.paymentHoldExpiresAt =
+                    null;
+
+                if (
+                    booking.paymentStatus ===
+                    "pending"
+                ) {
+                    booking.paymentStatus =
+                        "failed";
+                }
+            }
+
+
+            await booking.save();
+
+
+            return res.json({
+
                 success: true,
+
                 message:
-                    "Booking status updated successfully",
+                    "Booking status updated successfully.",
+
                 booking
             });
 
+
         } catch (error) {
+
             console.error(
-                "Update booking status error:",
-                error.message
+                "UPDATE BOOKING STATUS ERROR:",
+                error
             );
 
-            res.status(500).json({
+            return res.status(500).json({
+
                 success: false,
+
                 message:
                     "Failed to update booking status"
             });
@@ -599,62 +691,77 @@ router.patch(
     }
 );
 
-// --------------------------------------------------
+
+// =====================================================
 // CANCEL BOOKING
-// PATCH /api/bookings/:id/cancel
-//
+// PATCH /api/bookings/:bookingId/cancel
 // ADMIN ONLY
-// --------------------------------------------------
+// =====================================================
 
 router.patch(
-    "/:id/cancel",
+    "/:bookingId/cancel",
     adminAuth,
     async (req, res) => {
-        try {
-            const booking =
-                await Booking.findByIdAndUpdate(
-                    req.params.id,
-                    {
-                        bookingStatus:
-                            "cancelled",
 
-                        paymentHoldExpiresAt:
-                            null
-                    },
-                    {
-                        new: true,
-                        runValidators: true
-                    }
-                );
+        try {
+
+            const booking =
+                await Booking.findOne({
+                    bookingId:
+                        req.params.bookingId
+                });
+
 
             if (!booking) {
+
                 return res.status(404).json({
+
                     success: false,
+
                     message:
                         "Booking not found"
                 });
             }
 
-            res.status(200).json({
+
+            booking.bookingStatus =
+                "cancelled";
+
+            booking.paymentHoldExpiresAt =
+                null;
+
+
+            await booking.save();
+
+
+            return res.json({
+
                 success: true,
+
                 message:
-                    "Booking cancelled successfully",
+                    "Booking cancelled successfully.",
+
                 booking
             });
 
+
         } catch (error) {
+
             console.error(
-                "Cancel booking error:",
-                error.message
+                "CANCEL BOOKING ERROR:",
+                error
             );
 
-            res.status(500).json({
+            return res.status(500).json({
+
                 success: false,
+
                 message:
                     "Failed to cancel booking"
             });
         }
     }
 );
+
 
 module.exports = router;
