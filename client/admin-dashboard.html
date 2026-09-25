@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Royal DC Hotel</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 72px;
+            background: #171717;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .brand {
+            color: #d4af37;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .admin-name {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            border: 1px solid #d4af37;
+            background: transparent;
+            color: #d4af37;
+            padding: 9px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #d4af37;
+            color: #111;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #151515;
+            border-right: 1px solid #2d2d2d;
+            padding: 25px 15px;
+        }
+
+        .sidebar-title {
+            color: #777;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 12px 15px;
+        }
+
+        .nav-item {
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            color: #bbb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.12);
+            color: #d4af37;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 35px;
+            overflow-x: auto;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* STAT CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: #181818;
+            border: 1px solid #2d2d2d;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            color: #d4af37;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        /* QUICK ACTIONS */
+        .section-title {
+            margin: 0 0 18px;
+            font-size: 20px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .action-card {
+            display: block;
+            text-decoration: none;
+            background: #181818;
+            border: 1px solid #2d2d2d;
+            border-radius: 14px;
+            padding: 24px;
+            transition: 0.2s ease;
+        }
+
+        .action-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .action-card h3 {
+            margin: 0 0 8px;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .action-card p {
+            margin: 0;
+            color: #888;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* LOADING */
+        .loading {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .admin-name {
+                display: none;
+            }
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                padding: 25px 18px;
+            }
+
+            .stats-grid,
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <div class="brand">
+            ROYAL DC HOTEL
+        </div>
+
+        <div class="admin-info">
+
+            <span
+                class="admin-name"
+                id="adminName"
+            >
+                Loading...
+            </span>
+
+            <button
+                type="button"
+                class="logout-btn"
+                id="logoutBtn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <p class="sidebar-title">
+                Management
+            </p>
+
+            <a
+                href="/admin-dashboard.html"
+                class="nav-item active"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+                id="roomsLink"
+            >
+                Rooms
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+                id="bookingsLink"
+            >
+                Bookings
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+                id="paymentsLink"
+            >
+                Payments
+            </a>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <div class="page-heading">
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Welcome to the Royal DC Hotel management portal.
+                </p>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <section>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-label">
+                            Total Rooms
+                        </div>
+
+                        <div
+                            class="stat-value"
+                            id="totalRooms"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-label">
+                            Available Rooms
+                        </div>
+
+                        <div
+                            class="stat-value"
+                            id="availableRooms"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-label">
+                            Total Bookings
+                        </div>
+
+                        <div
+                            class="stat-value"
+                            id="totalBookings"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-label">
+                            Pending Bookings
+                        </div>
+
+                        <div
+                            class="stat-value"
+                            id="pendingBookings"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+            <section>
+
+                <h2 class="section-title">
+                    Quick Actions
+                </h2>
+
+                <div class="actions-grid">
+
+                    <a
+                        href="#"
+                        class="action-card"
+                        id="manageRooms"
+                    >
+
+                        <div class="action-icon">
+                            🏨
+                        </div>
+
+                        <h3>
+                            Manage Rooms
+                        </h3>
+
+                        <p>
+                            View and manage hotel rooms,
+                            prices and availability.
+                        </p>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="action-card"
+                        id="manageBookings"
+                    >
+
+                        <div class="action-icon">
+                            📋
+                        </div>
+
+                        <h3>
+                            Manage Bookings
+                        </h3>
+
+                        <p>
+                            View guest bookings and
+                            booking status.
+                        </p>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="action-card"
+                        id="managePayments"
+                    >
+
+                        <div class="action-icon">
+                            💳
+                        </div>
+
+                        <h3>
+                            Payments
+                        </h3>
+
+                        <p>
+                            View payment information
+                            and transaction status.
+                        </p>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="/admin-dashboard.js"></script>
+
+</body>
+</html>

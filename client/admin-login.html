@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | Royal DC Hotel</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.78),
+                    rgba(0, 0, 0, 0.88)
+                ),
+                #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .login-card {
+            background: #171717;
+            border: 1px solid #333;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-name {
+            margin: 0;
+            color: #d4af37;
+            font-size: 30px;
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            margin-top: 8px;
+            color: #aaa;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: #d4af37;
+            margin: 18px auto 28px;
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+
+        .description {
+            color: #999;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #ddd;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #3a3a3a;
+            border-radius: 9px;
+            background: #222;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #777;
+        }
+
+        input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 70px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 9px;
+            background: #d4af37;
+            color: #111;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .login-button:hover {
+            background: #e2c158;
+            transform: translateY(-1px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(220, 53, 69, 0.12);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #ff8b95;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(40, 167, 69, 0.12);
+            border: 1px solid rgba(40, 167, 69, 0.4);
+            color: #8be09a;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+            color: #999;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .back-home:hover {
+            color: #d4af37;
+        }
+
+        .security-note {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #2d2d2d;
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 28px 22px;
+            }
+
+            .brand-name {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="login-card">
+
+            <div class="brand">
+                <h1 class="brand-name">
+                    ROYAL DC HOTEL
+                </h1>
+
+                <div class="brand-subtitle">
+                    Management Portal
+                </div>
+
+                <div class="divider"></div>
+            </div>
+
+            <h2>Admin Login</h2>
+
+            <p class="description">
+                Sign in to access the hotel management dashboard.
+            </p>
+
+            <form id="adminLoginForm">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter admin email"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showPassword"
+                        >
+                            SHOW
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+                    Sign In
+                </button>
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+            </form>
+
+            <a
+                href="/"
+                class="back-home"
+            >
+                ← Back to Royal DC Hotel
+            </a>
+
+            <div class="security-note">
+                Authorized personnel only.<br>
+                Your account activity is protected.
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="/admin-login.js"></script>
+
+</body>
+</html>

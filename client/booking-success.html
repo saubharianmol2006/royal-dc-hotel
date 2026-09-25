@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Booking Confirmed | Royal DC Hotel</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+        .success-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.72),
+                    rgba(0, 0, 0, 0.82)
+                ),
+                #111;
+        }
+
+        .success-card {
+            width: 100%;
+            max-width: 850px;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .success-header {
+            text-align: center;
+            padding: 45px 25px 35px;
+            background: #111;
+            color: #fff;
+        }
+
+        .success-icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d4af37;
+            color: #111;
+            font-size: 42px;
+        }
+
+        .success-header h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        .success-header p {
+            margin: 0;
+            color: #ddd;
+            font-size: 16px;
+        }
+
+        .booking-content {
+            padding: 35px;
+        }
+
+        .booking-id-box {
+            padding: 18px 20px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            background: #f8f5eb;
+            border: 1px solid #e5d49b;
+            text-align: center;
+        }
+
+        .booking-id-box span {
+            display: block;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .booking-id-box strong {
+            color: #111;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .details-title {
+            margin-bottom: 18px;
+            color: #222;
+            font-size: 21px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .detail-item {
+            padding: 16px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        .detail-item span {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .detail-item strong {
+            color: #222;
+            font-size: 15px;
+        }
+
+        .payment-status {
+            color: #16803c !important;
+        }
+
+        .total-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .total-box span {
+            font-size: 16px;
+        }
+
+        .total-box strong {
+            color: #d4af37;
+            font-size: 24px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons button,
+        .action-buttons a {
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-home {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-print {
+            background: #d4af37;
+            color: #111;
+        }
+
+        .action-buttons button:hover,
+        .action-buttons a:hover {
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading i {
+            font-size: 40px;
+            color: #d4af37;
+        }
+
+        .error-box {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .error-box i {
+            font-size: 50px;
+            color: #c0392b;
+        }
+
+        .error-box h2 {
+            margin: 15px 0 8px;
+        }
+
+        .error-box p {
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .success-page {
+                padding: 20px 12px;
+            }
+
+            .booking-content {
+                padding: 22px;
+            }
+
+            .success-header {
+                padding: 35px 18px 28px;
+            }
+
+            .success-header h1 {
+                font-size: 26px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .total-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        @media print {
+            .success-page {
+                background: #fff;
+                padding: 0;
+            }
+
+            .success-card {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .action-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="success-page">
+
+        <div class="success-card">
+
+            <!-- Header -->
+            <div class="success-header">
+
+                <div class="success-icon">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+
+                <h1>Booking Confirmed!</h1>
+
+                <p>
+                    Thank you for choosing Royal DC Hotel.
+                    Your booking has been successfully confirmed.
+                </p>
+
+            </div>
+
+            <!-- Content -->
+            <div class="booking-content" id="bookingContent">
+
+                <div class="loading">
+
+                    <i class="bi bi-arrow-repeat"></i>
+
+                    <p>
+                        Loading your booking details...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadBooking);
+
+        function loadBooking() {
+
+            const bookingContent =
+                document.getElementById("bookingContent");
+
+            const bookingData =
+                sessionStorage.getItem("royalDCBooking");
+
+            if (!bookingData) {
+
+                bookingContent.innerHTML = `
+                    <div class="error-box">
+
+                        <i class="bi bi-exclamation-circle"></i>
+
+                        <h2>Booking Details Not Found</h2>
+
+                        <p>
+                            We could not find your booking details.
+                            Please return to the hotel website.
+                        </p>
+
+                        <div class="action-buttons">
+
+                            <a
+                                href="/index.html"
+                                class="btn-home"
+                            >
+                                <i class="bi bi-house"></i>
+                                Back to Home
+                            </a>
+
+                        </div>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+            let booking;
+
+            try {
+
+                booking = JSON.parse(bookingData);
+
+            } catch (error) {
+
+                bookingContent.innerHTML = `
+                    <div class="error-box">
+
+                        <i class="bi bi-exclamation-circle"></i>
+
+                        <h2>Invalid Booking Data</h2>
+
+                        <p>
+                            Booking information could not be loaded.
+                        </p>
+
+                        <div class="action-buttons">
+
+                            <a
+                                href="/index.html"
+                                class="btn-home"
+                            >
+                                <i class="bi bi-house"></i>
+                                Back to Home
+                            </a>
+
+                        </div>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+            const bookingId =
+                booking.bookingId || "N/A";
+
+            const guestName =
+                booking.guestName || "N/A";
+
+            const guestEmail =
+                booking.guestEmail || "N/A";
+
+            const guestPhone =
+                booking.guestPhone || "N/A";
+
+            const roomNumber =
+                booking.roomNumber || "N/A";
+
+            const roomType =
+                booking.roomType || "Room";
+
+            const checkIn =
+                formatDate(booking.checkIn);
+
+            const checkOut =
+                formatDate(booking.checkOut);
+
+            const adults =
+                booking.adults || 1;
+
+            const children =
+                booking.children || 0;
+
+            const totalNights =
+                booking.totalNights || 1;
+
+            const totalAmount =
+                Number(booking.totalAmount || 0);
+
+            const paymentStatus =
+                booking.paymentStatus || "paid";
+
+            bookingContent.innerHTML = `
+
+                <div class="booking-id-box">
+
+                    <span>Booking ID</span>
+
+                    <strong>
+                        ${escapeHtml(bookingId)}
+                    </strong>
+
+                </div>
+
+                <h2 class="details-title">
+                    Booking Details
+                </h2>
+
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Guest Name</span>
+                        <strong>
+                            ${escapeHtml(guestName)}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Email</span>
+                        <strong>
+                            ${escapeHtml(guestEmail)}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Phone</span>
+                        <strong>
+                            ${escapeHtml(guestPhone)}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Room</span>
+                        <strong>
+                            ${escapeHtml(roomType)}
+                            — Room ${escapeHtml(roomNumber)}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Check-in</span>
+                        <strong>
+                            ${checkIn}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Check-out</span>
+                        <strong>
+                            ${checkOut}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Guests</span>
+                        <strong>
+                            ${adults} Adult(s),
+                            ${children} Child(ren)
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Total Nights</span>
+                        <strong>
+                            ${totalNights}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Payment Status</span>
+                        <strong class="payment-status">
+                            ${escapeHtml(paymentStatus)}
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="total-box">
+
+                    <span>
+                        Total Amount Paid
+                    </span>
+
+                    <strong>
+                        ₹${formatAmount(totalAmount)}
+                    </strong>
+
+                </div>
+
+                <div class="action-buttons">
+
+                    <button
+                        type="button"
+                        class="btn-print"
+                        onclick="window.print()"
+                    >
+                        <i class="bi bi-printer"></i>
+                        Print Booking
+                    </button>
+
+                    <a
+                        href="/index.html"
+                        class="btn-home"
+                    >
+                        <i class="bi bi-house"></i>
+                        Back to Home
+                    </a>
+
+                </div>
+            `;
+        }
+
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+                return "N/A";
+            }
+
+            const date =
+                new Date(dateValue);
+
+            if (Number.isNaN(date.getTime())) {
+                return "N/A";
+            }
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+        }
+
+        function formatAmount(amount) {
+
+            return Number(amount || 0)
+                .toLocaleString("en-IN", {
+                    maximumFractionDigits: 2
+                });
+        }
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,577 @@
+/* =========================================================
+   ROYAL DC HOTEL
+   GLOBAL STYLES
+   ========================================================= */
+
+:root {
+    --black: #0b0b0b;
+    --dark: #111111;
+    --dark-soft: #181818;
+    --gold: #c9a45c;
+    --gold-light: #e0c27a;
+    --white: #ffffff;
+    --text: #eeeeee;
+    --muted: #a7a7a7;
+    --border: rgba(201, 164, 92, 0.25);
+    --container: 1200px;
+    --transition: 0.3s ease;
+}
+
+
+/* ================= RESET ================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container {
+    width: min(92%, var(--container));
+    margin: 0 auto;
+}
+
+
+/* ================= TYPOGRAPHY ================= */
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Cormorant Garamond", serif;
+    line-height: 1.1;
+}
+
+.section-padding {
+    padding: 100px 0;
+}
+
+.section-label {
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.section-heading.centered {
+    display: block;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 50px;
+}
+
+.section-heading h2,
+.about-content h2 {
+    font-size: clamp(42px, 5vw, 62px);
+    font-weight: 500;
+}
+
+.section-heading h2 span,
+.about-content h2 span,
+.cta-content h2 span {
+    color: var(--gold);
+}
+
+
+/* ================= HEADER ================= */
+
+.site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navbar {
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* ================= LOGO ================= */
+
+.logo {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.logo-main {
+    color: var(--white);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.logo-sub {
+    color: var(--gold);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 7px;
+    margin-top: 7px;
+    text-align: center;
+}
+
+
+/* ================= DESKTOP NAV ================= */
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+.nav-menu > a {
+    position: relative;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.nav-menu > a:not(.nav-book-btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -9px;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: var(--transition);
+}
+
+.nav-menu > a:hover,
+.nav-menu > a.active {
+    color: var(--gold);
+}
+
+.nav-menu > a:hover::after,
+.nav-menu > a.active::after {
+    width: 100%;
+}
+
+
+/* ================= BOOK BUTTON ================= */
+
+.nav-book-btn {
+    border: 1px solid var(--gold);
+    padding: 13px 22px;
+    color: var(--gold) !important;
+    transition: var(--transition);
+}
+
+.nav-book-btn:hover {
+    background: var(--gold);
+    color: var(--black) !important;
+}
+
+
+/* ================= MOBILE MENU ================= */
+
+.mobile-menu-btn {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    font-size: 28px;
+}
+
+.mobile-menu {
+    display: none;
+    padding: 20px 4%;
+    background: rgba(11, 11, 11, 0.98);
+    border-top: 1px solid var(--border);
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 13px 0;
+    color: var(--white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mobile-menu a:hover {
+    color: var(--gold);
+}
+
+
+/* ================= BUTTONS ================= */
+
+.btn-primary,
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 28px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: 1px solid var(--gold);
+}
+
+.btn-primary:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--white);
+}
+
+.btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+
+/* ================= TEXT LINK ================= */
+
+.text-link,
+.view-all-link,
+.room-link {
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.text-link i,
+.view-all-link i,
+.room-link i {
+    transition: var(--transition);
+}
+
+.text-link:hover i,
+.view-all-link:hover i,
+.room-link:hover i {
+    transform: translateX(5px);
+}
+
+
+/* ================= BOOKING BAR ================= */
+
+.booking-bar-section {
+    position: relative;
+    z-index: 10;
+    margin-top: -1px;
+}
+
+.booking-bar {
+    background: #151515;
+    border: 1px solid var(--border);
+    min-height: 105px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.8fr 1.4fr;
+    align-items: center;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+.booking-field {
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 25px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.booking-field > i {
+    color: var(--gold);
+    font-size: 20px;
+}
+
+.booking-field div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.booking-field span {
+    color: #858585;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.booking-field input,
+.booking-field select {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--white);
+    font-size: 13px;
+}
+
+.booking-field input {
+    color-scheme: dark;
+}
+
+.booking-field select {
+    cursor: pointer;
+}
+
+.booking-field select option {
+    background: var(--dark);
+}
+
+.booking-search-btn {
+    min-height: 65px;
+    margin-left: 20px;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+
+.booking-search-btn:hover {
+    background: var(--gold-light);
+}
+
+
+/* ================= FOOTER ================= */
+
+.site-footer {
+    background: #080808;
+    border-top: 1px solid rgba(201, 164, 92, 0.18);
+}
+
+.footer-grid {
+    padding: 70px 0;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.4fr 1fr;
+    gap: 50px;
+}
+
+.footer-brand p {
+    max-width: 300px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.footer-column h4 {
+    color: var(--gold);
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.footer-column a,
+.footer-column p {
+    color: #999;
+    font-size: 12px;
+    transition: var(--transition);
+}
+
+.footer-column a:hover {
+    color: var(--gold);
+}
+
+.footer-column p {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.footer-column p i {
+    color: var(--gold);
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-links a {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(201, 164, 92, 0.35);
+    color: var(--gold);
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--gold);
+    color: var(--black);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-bottom .container {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-bottom p {
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .nav-menu {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mobile-menu.show {
+        display: block;
+    }
+
+    .booking-bar {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .booking-field {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .booking-search-btn {
+        margin: 0;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .navbar {
+        min-height: 78px;
+    }
+
+    .section-padding {
+        padding: 70px 0;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .view-all-link {
+        margin-top: 20px;
+    }
+
+    .booking-bar {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
+    .booking-field {
+        padding: 10px 12px;
+    }
+
+    .booking-search-btn {
+        min-height: 55px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .footer-bottom .container {
+        text-align: center;
+        padding: 15px;
+    }
+}

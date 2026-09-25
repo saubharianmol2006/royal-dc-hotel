@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Rooms | Royal DC Hotel</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+        }
+
+        .topbar {
+            height: 72px;
+            background: #171717;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .brand {
+            color: #d4af37;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .admin-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .admin-name {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            border: 1px solid #d4af37;
+            background: transparent;
+            color: #d4af37;
+            padding: 9px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #d4af37;
+            color: #111;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #151515;
+            border-right: 1px solid #2d2d2d;
+            padding: 25px 15px;
+        }
+
+        .sidebar-title {
+            color: #777;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 12px 15px;
+        }
+
+        .nav-item {
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            color: #bbb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.12);
+            color: #d4af37;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+            overflow-x: auto;
+        }
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .rooms-container {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .room-card {
+            background: #181818;
+            border: 1px solid #2d2d2d;
+            border-radius: 15px;
+            padding: 24px;
+        }
+
+        .room-card:hover {
+            border-color: #555;
+        }
+
+        .room-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .room-number {
+            color: #d4af37;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .room-title {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .status {
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status.available {
+            background: rgba(40, 167, 69, 0.13);
+            border: 1px solid rgba(40, 167, 69, 0.35);
+            color: #8be09a;
+        }
+
+        .status.maintenance {
+            background: rgba(255, 193, 7, 0.12);
+            border: 1px solid rgba(255, 193, 7, 0.35);
+            color: #ffd76a;
+        }
+
+        .status.inactive {
+            background: rgba(220, 53, 69, 0.12);
+            border: 1px solid rgba(220, 53, 69, 0.35);
+            color: #ff8b95;
+        }
+
+        .room-description {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .room-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .detail-box {
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 9px;
+            padding: 12px;
+        }
+
+        .detail-label {
+            color: #777;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #eee;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .price {
+            color: #d4af37;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .price span {
+            color: #777;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .room-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 11px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .maintenance-btn {
+            background: transparent;
+            border: 1px solid #555;
+            color: #ccc;
+        }
+
+        .maintenance-btn:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .available-btn {
+            background: #d4af37;
+            border: 1px solid #d4af37;
+            color: #111;
+        }
+
+        .available-btn:hover {
+            background: #e2c158;
+        }
+
+        .loading,
+        .empty,
+        .error {
+            background: #181818;
+            border: 1px solid #2d2d2d;
+            border-radius: 14px;
+            padding: 25px;
+            color: #999;
+        }
+
+        .error {
+            color: #ff8b95;
+        }
+
+        @media (max-width: 1000px) {
+            .rooms-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .admin-name {
+                display: none;
+            }
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                padding: 25px 18px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #2d2d2d;
+            }
+
+            .room-details {
+                grid-template-columns: 1fr;
+            }
+
+            .room-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        ROYAL DC HOTEL
+    </div>
+
+    <div class="admin-area">
+
+        <span
+            class="admin-name"
+            id="adminName"
+        >
+            Loading...
+        </span>
+
+        <button
+            type="button"
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <p class="sidebar-title">
+            Management
+        </p>
+
+        <a
+            href="/admin-dashboard.html"
+            class="nav-item"
+        >
+            Dashboard
+        </a>
+
+        <a
+            href="/admin-rooms.html"
+            class="nav-item active"
+        >
+            Rooms
+        </a>
+
+        <a
+            href="#"
+            class="nav-item"
+            id="bookingsLink"
+        >
+            Bookings
+        </a>
+
+        <a
+            href="#"
+            class="nav-item"
+            id="paymentsLink"
+        >
+            Payments
+        </a>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="page-heading">
+
+            <h1>
+                Manage Rooms
+            </h1>
+
+            <p>
+                View hotel rooms, pricing and current availability.
+            </p>
+
+        </div>
+
+
+        <div
+            id="roomsContainer"
+            class="rooms-container"
+        >
+
+            <div class="loading">
+                Loading rooms...
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/admin-rooms.js"></script>
+
+</body>
+</html>

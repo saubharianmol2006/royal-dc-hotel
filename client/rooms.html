@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms | Royal DC Hotel</title>
+    <meta name="description" content="Explore Deluxe and Executive rooms at Royal DC Hotel, Aligarh.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rooms.css">
+</head>
+<body>
+
+<header class="rooms-header">
+    <div class="rooms-header-inner">
+        <a href="/index.html" class="rooms-brand">
+            <img src="assets/images/royal-dc-logo.jpeg.jpeg" alt="Royal DC Hotel">
+            <span><strong>ROYAL DC</strong><small>HOTEL</small></span>
+        </a>
+        <nav>
+            <a href="/index.html">Home</a>
+            <a href="/index.html#about">About</a>
+            <a href="/rooms.html" class="active">Rooms</a>
+            <a href="/index.html#restaurant">Restaurant</a>
+            <a href="/index.html#contact">Contact</a>
+        </nav>
+        <a href="#roomsList" class="top-book">Book Your Room</a>
+    </div>
+</header>
+
+<main>
+    <section class="rooms-hero">
+        <div class="rooms-hero-overlay"></div>
+        <div class="rooms-hero-content">
+            <span>ROYAL DC HOTEL • ALIGARH</span>
+            <h1>Choose Your <em>Stay</em></h1>
+            <p>Two carefully selected room categories, breakfast included.</p>
+        </div>
+    </section>
+
+    <section class="room-search">
+        <div class="room-search-inner">
+            <div>
+                <label for="checkIn">CHECK IN</label>
+                <input type="date" id="checkIn">
+            </div>
+            <div>
+                <label for="checkOut">CHECK OUT</label>
+                <input type="date" id="checkOut">
+            </div>
+            <div>
+                <label for="guests">GUESTS</label>
+                <select id="guests">
+                    <option value="1">1 Guest</option>
+                    <option value="2" selected>2 Guests</option>
+                    <option value="3">3 Guests</option>
+                </select>
+            </div>
+            <button id="searchRooms"><i class="bi bi-search"></i> Check Availability</button>
+        </div>
+        <p id="searchMessage" class="search-message"></p>
+    </section>
+
+    <section class="rooms-list-section" id="roomsList">
+        <div class="rooms-container">
+            <div class="section-heading">
+                <span>OUR ACCOMMODATION</span>
+                <h2>Rooms for Every <em>Stay</em></h2>
+                <p>Breakfast is included with both room categories.</p>
+            </div>
+
+            <div id="roomsContainer" class="rooms-container-grid">
+                <div class="loading">Loading rooms...</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div class="room-modal" id="roomModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card">
+        <button class="modal-close" id="modalClose" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+        <div class="modal-gallery">
+            <div class="modal-main">
+                <img id="modalMainImage" src="" alt="">
+                <button class="gallery-arrow left" id="galleryPrev"><i class="bi bi-chevron-left"></i></button>
+                <button class="gallery-arrow right" id="galleryNext"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            <div class="modal-thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="modal-info">
+            <span id="modalType"></span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+            <div class="modal-price" id="modalPrice"></div>
+            <div class="modal-details" id="modalDetails"></div>
+            <div class="modal-actions">
+                <a href="#bookingForm" class="modal-book" id="modalBook">Continue to Booking <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="booking-section" id="bookingForm">
+    <div class="booking-container">
+        <div class="section-heading">
+            <span>RESERVATION</span>
+            <h2>Book Your <em>Room</em></h2>
+            <p>Select a room above, then complete your booking details.</p>
+        </div>
+
+        <form id="bookingFormElement" class="booking-form">
+            <div class="selected-room-box">
+                <div>
+                    <small>SELECTED ROOM</small>
+                    <strong id="selectedRoomName">Please select a room</strong>
+                </div>
+                <div id="selectedRoomPrice">—</div>
+            </div>
+
+            <input type="hidden" id="selectedRoomId">
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="guestName">FULL NAME</label>
+                    <input id="guestName" required placeholder="Your full name">
+                </div>
+                <div class="form-field">
+                    <label for="guestEmail">EMAIL</label>
+                    <input id="guestEmail" type="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-field">
+                    <label for="guestPhone">PHONE</label>
+                    <input id="guestPhone" required placeholder="+91">
+                </div>
+                <div class="form-field">
+                    <label for="bookingAdults">ADULTS</label>
+                    <select id="bookingAdults">
+                        <option value="1">1 Adult</option>
+                        <option value="2" selected>2 Adults</option>
+                        <option value="3">3 Adults</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="bookingChildren">CHILDREN</label>
+                    <select id="bookingChildren">
+                        <option value="0" selected>0 Children</option>
+                        <option value="1">1 Child</option>
+                        <option value="2">2 Children</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="bookingCheckIn">CHECK IN</label>
+                    <input id="bookingCheckIn" type="date" required>
+                </div>
+                <div class="form-field">
+                    <label for="bookingCheckOut">CHECK OUT</label>
+                    <input id="bookingCheckOut" type="date" required>
+                </div>
+                <div class="form-field full">
+                    <label for="specialRequest">SPECIAL REQUEST</label>
+                    <textarea id="specialRequest" rows="4" placeholder="Any special request?"></textarea>
+                </div>
+            </div>
+
+            <div id="bookingMessage" class="booking-message"></div>
+            <button class="submit-booking" type="submit">Create Booking <i class="bi bi-arrow-right"></i></button>
+        </form>
+    </div>
+</section>
+
+<footer class="rooms-footer">
+    <div>
+        <strong>ROYAL DC HOTEL</strong>
+        <span>Khair By Pass, Near HP Pump, Aligarh</span>
+    </div>
+    <div class="footer-actions">
+        <a href="tel:+918679633669"><i class="bi bi-telephone"></i> +91 8679633669</a>
+        <a href="https://wa.me/918679633669" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+        <a href="/index.html">Back to Home</a>
+    </div>
+</footer>
+
+<script src="js/rooms.js"></script>
+</body>
+</html>

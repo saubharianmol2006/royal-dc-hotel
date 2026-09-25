@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Book Your Stay | Royal DC Hotel</title>
+
+    <meta
+        name="description"
+        content="Book your stay at Royal DC Hotel."
+    >
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Booking CSS -->
+    <link rel="stylesheet" href="css/booking.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="site-header">
+
+    <div class="container navbar">
+
+        <a href="index.html" class="logo">
+
+            <span class="logo-main">
+                ROYAL DC
+            </span>
+
+            <span class="logo-sub">
+                HOTEL
+            </span>
+
+        </a>
+
+
+        <nav class="nav-menu">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="rooms.html">
+                Rooms
+            </a>
+
+            <a href="index.html#about">
+                About
+            </a>
+
+            <a href="index.html#services">
+                Services
+            </a>
+
+            <a href="index.html#contact">
+                Contact
+            </a>
+
+            <a
+                href="booking.html"
+                class="nav-book-btn"
+            >
+                Book Now
+            </a>
+
+        </nav>
+
+
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+        >
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="mobile-menu"
+        id="mobileMenu"
+    >
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="rooms.html">
+            Rooms
+        </a>
+
+        <a href="index.html#about">
+            About
+        </a>
+
+        <a href="index.html#services">
+            Services
+        </a>
+
+        <a href="index.html#contact">
+            Contact
+        </a>
+
+        <a href="booking.html">
+            Book Now
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+
+    <!-- PAGE HERO -->
+
+    <section class="booking-page-hero">
+
+        <div class="container">
+
+            <p class="section-label">
+                ROYAL DC HOTEL
+            </p>
+
+            <h1>
+                Book Your <span>Stay</span>
+            </h1>
+
+            <p>
+                Complete your details below and reserve your
+                preferred room at Royal DC Hotel.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BOOKING SECTION
+    ================================================= -->
+
+    <section class="booking-section">
+
+        <div class="container booking-layout">
+
+
+            <!-- =========================================
+                 BOOKING FORM
+            ========================================== -->
+
+            <div class="booking-form-wrapper">
+
+                <div class="booking-form-header">
+
+                    <p class="section-label">
+                        RESERVATION DETAILS
+                    </p>
+
+                    <h2>
+                        Complete Your <span>Booking</span>
+                    </h2>
+
+                    <p>
+                        Please provide accurate information
+                        for your reservation.
+                    </p>
+
+                </div>
+
+
+                <form
+                    id="bookingForm"
+                    novalidate
+                >
+
+
+                    <!-- GUEST INFORMATION -->
+
+                    <div class="form-section">
+
+                        <h3>
+                            <span>01</span>
+                            Guest Information
+                        </h3>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="guestName">
+                                    Full Name
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="guestName"
+                                    name="guestName"
+                                    placeholder="Enter your full name"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="guestPhone">
+                                    Phone Number
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="guestPhone"
+                                    name="guestPhone"
+                                    placeholder="Enter your phone number"
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full-width">
+
+                                <label for="guestEmail">
+                                    Email Address
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="guestEmail"
+                                    name="guestEmail"
+                                    placeholder="Enter your email address"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- STAY DETAILS -->
+
+                    <div class="form-section">
+
+                        <h3>
+                            <span>02</span>
+                            Stay Details
+                        </h3>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="checkIn">
+                                    Check-in
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="bi bi-calendar3"></i>
+
+                                    <input
+                                        type="date"
+                                        id="checkIn"
+                                        name="checkIn"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="checkOut">
+                                    Check-out
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="bi bi-calendar3"></i>
+
+                                    <input
+                                        type="date"
+                                        id="checkOut"
+                                        name="checkOut"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="adults">
+                                    Adults
+                                    <span>*</span>
+                                </label>
+
+                                <select
+                                    id="adults"
+                                    name="adults"
+                                    required
+                                >
+
+                                    <option value="1">
+                                        1 Adult
+                                    </option>
+
+                                    <option value="2" selected>
+                                        2 Adults
+                                    </option>
+
+                                    <option value="3">
+                                        3 Adults
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="children">
+                                    Children
+                                </label>
+
+                                <select
+                                    id="children"
+                                    name="children"
+                                >
+
+                                    <option value="0" selected>
+                                        0 Children
+                                    </option>
+
+                                    <option value="1">
+                                        1 Child
+                                    </option>
+
+                                    <option value="2">
+                                        2 Children
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ROOM -->
+
+                    <div class="form-section">
+
+                        <h3>
+                            <span>03</span>
+                            Selected Room
+                        </h3>
+
+
+                        <div
+                            class="selected-room-box"
+                            id="selectedRoomBox"
+                        >
+
+                            <div class="selected-room-loading">
+
+                                <div class="small-loader"></div>
+
+                                <span>
+                                    Loading room details...
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SPECIAL REQUEST -->
+
+                    <div class="form-section">
+
+                        <h3>
+                            <span>04</span>
+                            Special Request
+                        </h3>
+
+
+                        <div class="form-group">
+
+                            <label for="specialRequest">
+                                Special Request
+                            </label>
+
+                            <textarea
+                                id="specialRequest"
+                                name="specialRequest"
+                                rows="5"
+                                placeholder="Any special request or message..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- MESSAGE -->
+
+                    <div
+                        class="booking-message"
+                        id="bookingMessage"
+                    ></div>
+
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="booking-submit-btn"
+                        id="bookingSubmitBtn"
+                    >
+
+                        <span id="bookingSubmitText">
+                            Confirm Booking
+                        </span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+
+                    <p class="secure-note">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        Your booking information is securely processed.
+
+                    </p>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 BOOKING SUMMARY
+            ========================================== -->
+
+            <aside class="booking-summary">
+
+                <div class="summary-header">
+
+                    <p class="section-label">
+                        YOUR RESERVATION
+                    </p>
+
+                    <h2>
+                        Booking <span>Summary</span>
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="summary-room"
+                    id="summaryRoom"
+                >
+
+                    <div class="summary-room-placeholder">
+
+                        <i class="bi bi-building"></i>
+
+                        <span>
+                            Room will appear here
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-details">
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            <i class="bi bi-calendar3"></i>
+                            Check-in
+                        </span>
+
+                        <strong id="summaryCheckIn">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            <i class="bi bi-calendar3"></i>
+                            Check-out
+                        </span>
+
+                        <strong id="summaryCheckOut">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            <i class="bi bi-moon-stars"></i>
+                            Nights
+                        </span>
+
+                        <strong id="summaryNights">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            <i class="bi bi-people"></i>
+                            Guests
+                        </span>
+
+                        <strong id="summaryGuests">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-price">
+
+                    <div>
+
+                        <span>
+                            Room Rate
+                        </span>
+
+                        <strong id="summaryRate">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+                        <strong id="summaryTotal">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-note">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    <p>
+                        Final availability and booking confirmation
+                        will be checked by the hotel system.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+        <div class="footer-brand">
+
+            <a href="index.html" class="logo">
+
+                <span class="logo-main">
+                    ROYAL DC
+                </span>
+
+                <span class="logo-sub">
+                    HOTEL
+                </span>
+
+            </a>
+
+            <p>
+                Elegant hospitality, comfortable rooms and
+                memorable stays.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                QUICK LINKS
+            </h4>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="rooms.html">
+                Rooms
+            </a>
+
+            <a href="index.html#about">
+                About
+            </a>
+
+            <a href="index.html#services">
+                Services
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                CONTACT
+            </h4>
+
+            <p>
+                <i class="bi bi-telephone"></i>
+                +91 XXXXX XXXXX
+            </p>
+
+            <p>
+                <i class="bi bi-envelope"></i>
+                info@royaldchotel.com
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                FOLLOW US
+            </h4>
+
+            <div class="social-links">
+
+                <a href="#">
+                    <i class="bi bi-instagram"></i>
+                </a>
+
+                <a href="#">
+                    <i class="bi bi-facebook"></i>
+                </a>
+
+                <a href="#">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <div class="container">
+
+            <p>
+                © 2026 Royal DC Hotel. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="js/main.js"></script>
+
+<script src="js/booking.js"></script>
+
+
+</body>
+</html>
